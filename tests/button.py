@@ -3,7 +3,8 @@ from Qt import QtWidgets
 from chroma_wdigets.common.qt import application
 from chroma_wdigets.common.icon import ChromaIcon
 from chroma_wdigets.components.widgets.button import (
-    PushButton, PrimaryPushButton, HyperlinkButton, RadioButton
+    PushButton, PrimaryPushButton, HyperlinkButton, RadioButton,
+    ToolButton, PrimaryToolButton
 )
 
 
@@ -19,12 +20,16 @@ class W(QtWidgets.QDialog):
         btn2 = PrimaryPushButton('你好')
         btn3 = HyperlinkButton('https://github.com/', '你好')
         btn4 = RadioButton('测试')
+        btn5 = ToolButton(ChromaIcon.ACCEPT)
+        btn6 = PrimaryToolButton(ChromaIcon.ACCEPT)
 
         layout.addWidget(btn0)
         layout.addWidget(btn1)
         layout.addWidget(btn2)
         layout.addWidget(btn3)
         layout.addWidget(btn4)
+        layout.addWidget(btn5)
+        layout.addWidget(btn6)
 
 
 if __name__ == '__main__':
