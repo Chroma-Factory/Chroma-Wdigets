@@ -7,8 +7,10 @@ from Qt import QtCore
 from Qt import QtGui
 
 from chroma_wdigets.common.theme import ChromaStyleSheet
-from chroma_wdigets.common.icon import to_q_icon, draw_icon, ChromaIconBase
+from chroma_wdigets.common.icon import (
+    to_icon, draw_icon, ChromaIconBase, ChromaIcon)
 from chroma_wdigets.common.config import Theme, is_dark_theme
+from chroma_wdigets.common.animation import TranslateYAnimation
 
 
 class ButtonBase(object):
@@ -16,7 +18,7 @@ class ButtonBase(object):
         pass
 
     def icon(self):
-        return to_q_icon(self._icon)
+        return to_icon(self._icon)
 
     def setProperty(self, name, value):
         if name != 'icon':
@@ -171,3 +173,64 @@ class RadioButton(QtWidgets.QRadioButton):
     def __init__(self, text, parent=None):
         super(RadioButton, self).__init__(text=text, parent=parent)
         ChromaStyleSheet.BUTTON.apply(self)
+
+
+class DropDownButtonBase(object):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._menu = None
+        self.arrow_ani = TranslateYAnimation(self)
+
+    def set_menu(self, menu):
+        self._menu = menu
+
+    def menu(self):
+        return self._menu
+
+    def _show_menu(self):
+        if not self.menu():
+            return
+
+        menu = self.menu()
+
+        if menu.view.width() < self.width():
+            menu.view.setMinimumWidth(self.width())
+            menu.adjust_size()
+
+        # show menu
+        x = -menu.width() // 2 + menu.layout().contentsMargins().left() + self.width() // 2
+        y = self.height()
+        menu.exec(self.mapToGlobal(QtCore.QPoint(x, y)))
+
+    def _hide_menu(self):
+        if self.menu():
+            self.menu().hide()
+
+    def _draw_drop_down_icon(self, painter, rect):
+        if is_dark_theme():
+            ChromaIcon.ARROW_DOWN.render(painter, rect)
+        else:
+            ChromaIcon.ARROW_DOWN.render(painter, rect, fill="#646464")
+
+    def paintEvent(self, e):
+        painter = QtGui.QPainter(self)
+        painter.setRenderHints(QtGui.QPainter.Antialiasing)
+        if self.is_hover:
+            painter.setOpacity(0.8)
+        elif self.is_pressed:
+            painter.setOpacity(0.7)
+
+        rect = QtCore.QRectF(self.width() - 22,
+                             self.height() / 2 - 5 + self.arrow_ani.y, 10, 10)
+        self._draw_drop_down_icon(painter, rect)
+
+
+class DropDownPushButton(DropDownButtonBase, PushButton):
+
+    def mouseReleaseEvent(self, e):
+        PushButton.mouseReleaseEvent(self, e)
+        self._show_menu()
+
+    def paintEvent(self, e):
+        PushButton.paintEvent(self, e)
+        DropDownButtonBase.paintEvent(self, e)

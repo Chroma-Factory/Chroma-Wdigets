@@ -56,8 +56,7 @@ class ChromaIconBase(object):
         draw_svg_icon(svg, painter, rect)
 
 
-def to_q_icon(icon):
-    """ convet `icon` to `QIcon` """
+def to_icon(icon):
     if isinstance(icon, str):
         return QIcon(icon)
 
