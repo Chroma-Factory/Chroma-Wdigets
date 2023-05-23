@@ -1,7 +1,7 @@
 from enum import Enum
 
-from Qt.QtGui import QIcon
-from Qt.QtCore import QFile, QRectF
+from Qt.QtGui import QIcon, QIconEngine
+from Qt.QtCore import QFile, QRectF, Qt
 from Qt.QtXml import QDomDocument
 from Qt.QtSvg import QSvgRenderer
 
@@ -178,3 +178,35 @@ class ChromaIcon(ChromaIconBase, Enum):
         return '{}/images/icons/{}_{}.svg'.format(
             RESOURCES_PATH, self.value, get_icon_color(theme)
         )
+
+
+class Icon(QIcon):
+    def __init__(self, icon):
+        super().__init__(icon.path())
+        self.chroma_icon = icon
+
+
+class MenuIconEngine(QIconEngine):
+
+    def __init__(self, icon):
+        super().__init__()
+        self.icon = icon
+
+    def paint(self, painter, rect, mode, state):
+        painter.save()
+
+        if mode == QIcon.Disabled:
+            painter.setOpacity(0.5)
+        elif mode == QIcon.Selected:
+            painter.setOpacity(0.7)
+
+        # change icon color according to the theme
+        icon = self.icon
+        if isinstance(self.icon, Icon):
+            icon = self.icon.chroma_icon.icon()
+
+        # prevent the left side of the icon from being cropped
+        rect.adjust(-1, 0, 0, 0)
+
+        icon.paint(painter, rect, Qt.AlignHCenter, QIcon.Normal, state)
+        painter.restore()
