@@ -1,5 +1,6 @@
 from enum import Enum
 
+from Qt.QtWidgets import QAction
 from Qt.QtGui import QIcon, QIconEngine
 from Qt.QtCore import QFile, QRectF, Qt
 from Qt.QtXml import QDomDocument
@@ -210,3 +211,27 @@ class MenuIconEngine(QIconEngine):
 
         icon.paint(painter, rect, Qt.AlignHCenter, QIcon.Normal, state)
         painter.restore()
+
+
+class Action(QAction):
+    def __init__(self, icon=None, text='', parent=None, **kwargs):
+        if isinstance(icon, ChromaIconBase):
+            _icon = icon.icon()
+        else:
+            _icon = icon
+        super(Action, self).__init__(
+            text=text, icon=_icon, parent=parent, **kwargs)
+        self.chroma_icon = icon
+
+    def icon(self):
+        if self.chroma_icon:
+            return Icon(self.chroma_icon)
+
+        return super(Action, self).icon()
+
+    def setIcon(self, icon):
+        if isinstance(icon, ChromaIconBase):
+            self.chroma_icon = icon
+            icon = icon.icon()
+
+        super(Action, self).setIcon(icon)

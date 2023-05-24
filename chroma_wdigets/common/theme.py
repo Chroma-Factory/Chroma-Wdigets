@@ -13,7 +13,8 @@ from chroma_wdigets.common.config import (
     Theme,
     qconfig,
     is_dark_theme,
-    RESOURCES_PATH
+    RESOURCES_PATH,
+    DARK_BACKGROUND_COLOR
 )
 
 
@@ -49,6 +50,7 @@ class ThemeColor(Enum):
     DARK_1 = "ThemeColorDark1"
     DARK_2 = "ThemeColorDark2"
     DARK_3 = "ThemeColorDark3"
+    DARK_BACKGROUND = "DarkBackground"
     LIGHT_1 = "ThemeColorLight1"
     LIGHT_2 = "ThemeColorLight2"
     LIGHT_3 = "ThemeColorLight3"
@@ -78,6 +80,8 @@ class ThemeColor(Enum):
                 s *= 0.78
             elif self == self.LIGHT_3:
                 s *= 0.65
+            elif self == self.DARK_BACKGROUND:
+                return QtGui.QColor(DARK_BACKGROUND_COLOR)
         else:
             if self == self.DARK_1:
                 v *= 0.75
@@ -99,10 +103,23 @@ class ThemeColor(Enum):
         return QtGui.QColor.fromHsvF(h, min(s, 1), min(v, 1))
 
 
+class ThemePath(Enum):
+    SRC_ROOT = 'SRC_ROOT'
+
+    def path(self):
+        path_by_name = {
+            'SRC_ROOT': RESOURCES_PATH
+        }
+        return path_by_name[self.value]
+
+
 def apply_theme_color(qss):
     template = QssTemplate(qss)
-    mappings = {c.value: c.name() for c in ThemeColor._member_map_.values()}
-    return template.safe_substitute(mappings)
+    color_mappings = {c.value: c.name() for c in
+                      ThemeColor._member_map_.values()}
+    path_mappings = {p.value: p.path() for p in
+                     ThemePath._member_map_.values()}
+    return template.safe_substitute({**color_mappings, **path_mappings})
 
 
 def get_style_sheet(style_sheet_obj, theme=Theme.DARK):
@@ -178,3 +195,6 @@ def update_style_sheet():
 def set_theme(theme: Theme, save=False):
     qconfig.set(qconfig.theme_mode, theme, save)
     update_style_sheet()
+
+
+print(ThemePath.SRC_ROOT.value)

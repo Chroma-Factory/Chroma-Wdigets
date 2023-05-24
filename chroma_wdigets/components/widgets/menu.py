@@ -12,6 +12,7 @@ from chroma_wdigets.common.config import is_dark_theme
 from chroma_wdigets.common.smooth_scroll import SmoothScroll
 from chroma_wdigets.common.icon import (
     ChromaIcon, ChromaIconBase, MenuIconEngine)
+from chroma_wdigets.common.theme import ChromaStyleSheet
 
 
 class MenuAnimationType(Enum):
@@ -66,23 +67,17 @@ class MenuAnimationManager(QtCore.QObject):
         self._init_ani(pos)
 
     @classmethod
-    def register(cls, name):
-        """ register menu animation manager"""
-
-        def wrapper(Manager):
-            if name not in cls.managers:
-                cls.managers[name] = Manager
-
-            return Manager
-
-        return wrapper
-
-    @classmethod
     def make(cls, menu, ani_type):
-        if ani_type not in cls.managers:
+        manager_by_type = {
+            MenuAnimationType.NONE: DummyMenuAnimationManager,
+            MenuAnimationType.DROP_DOWN: DropDownMenuAnimationManager,
+            MenuAnimationType.PULL_UP: PullUpMenuAnimationManager
+        }
+
+        if ani_type not in manager_by_type:
             raise ValueError(f'`{ani_type}` is an invalid menu animation type.')
 
-        return cls.managers[ani_type](menu)
+        return manager_by_type[ani_type](menu)
 
 
 class DummyMenuAnimationManager(MenuAnimationManager):
@@ -290,7 +285,7 @@ class RoundMenu(QtWidgets.QWidget):
         self.h_layout.addWidget(self.view, 1, QtCore.Qt.AlignCenter)
 
         self.h_layout.setContentsMargins(12, 8, 12, 20)
-        ChromaIcon.MENU.apply(self)
+        ChromaStyleSheet.MENU.apply(self)
 
         self.view.itemClicked.connect(self._on_item_clicked)
         self.view.itemEntered.connect(self._on_item_entered)
@@ -627,13 +622,7 @@ class RoundMenu(QtWidgets.QWidget):
         if self.isVisible():
             return
 
-        manager_by_type = {
-            MenuAnimationType.NONE: DummyMenuAnimationManager,
-            MenuAnimationType.DROP_DOWN: DropDownMenuAnimationManager,
-            MenuAnimationType.PULL_UP: PullUpMenuAnimationManager
-        }
-
-        self.ani_manager = manager_by_type[ani_type].make(self, ani_type)
+        self.ani_manager = MenuAnimationManager.make(self, ani_type)
         self.ani_manager.exec(pos)
 
         self.show()

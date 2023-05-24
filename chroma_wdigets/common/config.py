@@ -12,6 +12,7 @@ from Qt.QtCore import QObject, Signal
 from Qt.QtGui import QColor
 
 PRIMARY_COLOR = "#8A379B"
+DARK_BACKGROUND_COLOR = "#242732"
 
 RESOURCES_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
