@@ -67,19 +67,23 @@ class MenuAnimationManager(QtCore.QObject):
         self._init_ani(pos)
 
     @classmethod
-    def make(cls, menu, ani_type):
-        manager_by_type = {
-            MenuAnimationType.NONE: DummyMenuAnimationManager,
-            MenuAnimationType.DROP_DOWN: DropDownMenuAnimationManager,
-            MenuAnimationType.PULL_UP: PullUpMenuAnimationManager
-        }
+    def register(cls, name):
+        """ register menu animation manager"""
+        def wrapper(Manager):
+            if name not in cls.managers:
+                cls.managers[name] = Manager
+            return Manager
+        return wrapper
 
-        if ani_type not in manager_by_type:
+    @classmethod
+    def make(cls, menu, ani_type):
+        if ani_type not in cls.managers:
             raise ValueError(f'`{ani_type}` is an invalid menu animation type.')
 
-        return manager_by_type[ani_type](menu)
+        return cls.managers[ani_type](menu)
 
 
+@MenuAnimationManager.register(MenuAnimationType.NONE)
 class DummyMenuAnimationManager(MenuAnimationManager):
     """ Dummy menu animation manager """
 
@@ -87,6 +91,7 @@ class DummyMenuAnimationManager(MenuAnimationManager):
         self.menu.move(self._end_position(pos))
 
 
+@MenuAnimationManager.register(MenuAnimationType.DROP_DOWN)
 class DropDownMenuAnimationManager(MenuAnimationManager):
     """ Drop down menu animation manager """
 
@@ -104,6 +109,7 @@ class DropDownMenuAnimationManager(MenuAnimationManager):
         self.menu.setMask(QtGui.QRegion(0, y, w, h))
 
 
+@MenuAnimationManager.register(MenuAnimationType.PULL_UP)
 class PullUpMenuAnimationManager(MenuAnimationManager):
     """ Pull up menu animation manager """
 
