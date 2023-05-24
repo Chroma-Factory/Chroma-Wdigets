@@ -195,6 +195,3 @@ def update_style_sheet():
 def set_theme(theme: Theme, save=False):
     qconfig.set(qconfig.theme_mode, theme, save)
     update_style_sheet()
-
-
-print(ThemePath.SRC_ROOT.value)
