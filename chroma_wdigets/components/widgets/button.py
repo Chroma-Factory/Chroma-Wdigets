@@ -11,6 +11,7 @@ from chroma_wdigets.common.icon import (
     to_icon, draw_icon, ChromaIconBase, ChromaIcon)
 from chroma_wdigets.common.config import Theme, is_dark_theme
 from chroma_wdigets.common.animation import TranslateYAnimation
+from chroma_wdigets.common.font import set_font
 
 
 class ButtonBase(object):
@@ -70,6 +71,7 @@ class PushButton(QtWidgets.QPushButton, ButtonBase):
 
         self.setIconSize(QtCore.QSize(16, 16))
         self.set_icon(icon)
+        set_font(self)
 
         self._position_initial()
 
@@ -121,6 +123,8 @@ class HyperlinkButton(QtWidgets.QPushButton):
         self.clicked.connect(lambda i: QtGui.QDesktopServices.openUrl(
             self.get_url()))
 
+        set_font(self)
+
         self.set_url(url)
 
     def get_url(self):
@@ -139,6 +143,7 @@ class ToolButton(QtWidgets.QToolButton, ButtonBase):
 
         self.setIconSize(QtCore.QSize(16, 16))
         self.set_icon(icon)
+        set_font(self)
         self._position_initial()
 
     def set_icon(self, icon):
@@ -173,6 +178,7 @@ class RadioButton(QtWidgets.QRadioButton):
     def __init__(self, text, parent=None):
         super(RadioButton, self).__init__(text=text, parent=parent)
         ChromaStyleSheet.BUTTON.apply(self)
+        set_font(self)
 
 
 class DropDownButtonBase(object):
