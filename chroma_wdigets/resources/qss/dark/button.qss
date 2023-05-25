@@ -204,20 +204,3 @@ RadioButton::indicator:disabled {
     border: 2px solid #646464;
     background-color: transparent;
 }
-
-TransparentToolButton {
-    background-color: transparent;
-    border: none;
-    border-radius: 4px;
-    margin: 0;
-}
-
-TransparentToolButton:hover {
-    background-color: rgba(255, 255, 255, 9);
-    border: none;
-}
-
-TransparentToolButton:pressed {
-    background-color: rgba(255, 255, 255, 6);
-    border: none;
-}

@@ -1,10 +1,11 @@
 from Qt import QtWidgets
 
 from chroma_wdigets.common.qt import application
-from chroma_wdigets.common.icon import ChromaIcon,Action
+from chroma_wdigets.common.icon import ChromaIcon, Action
 from chroma_wdigets.components.widgets.button import (
     PushButton, PrimaryPushButton, HyperlinkButton, RadioButton,
-    ToolButton, PrimaryToolButton, DropDownPushButton
+    ToolButton, PrimaryToolButton, DropDownPushButton,
+    PrimaryDropDownPushButton,PrimaryDropDownToolButton
 )
 from chroma_wdigets.components.widgets.menu import RoundMenu
 
@@ -31,6 +32,11 @@ class W(QtWidgets.QDialog):
         menu.add_action(Action(ChromaIcon.MUSIC, 'Music'))
         btn7.set_menu(menu)
 
+        btn8 = PrimaryDropDownPushButton('AAA')
+        btn8.set_menu(menu)
+
+        btn9 = PrimaryDropDownToolButton(ChromaIcon.BOOK_SHELF)
+        btn9.set_menu(menu)
 
         layout.addWidget(btn0)
         layout.addWidget(btn1)
@@ -40,6 +46,8 @@ class W(QtWidgets.QDialog):
         layout.addWidget(btn5)
         layout.addWidget(btn6)
         layout.addWidget(btn7)
+        layout.addWidget(btn8)
+        layout.addWidget(btn9)
 
 
 if __name__ == '__main__':

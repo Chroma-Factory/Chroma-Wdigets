@@ -232,7 +232,6 @@ class DropDownButtonBase(object):
 
 
 class DropDownPushButton(DropDownButtonBase, PushButton):
-
     def mouseReleaseEvent(self, e):
         PushButton.mouseReleaseEvent(self, e)
         self._show_menu()
@@ -240,3 +239,48 @@ class DropDownPushButton(DropDownButtonBase, PushButton):
     def paintEvent(self, e):
         PushButton.paintEvent(self, e)
         DropDownButtonBase.paintEvent(self, e)
+
+
+class DropDownToolButton(DropDownButtonBase, ToolButton):
+    def mouseReleaseEvent(self, e):
+        ToolButton.mouseReleaseEvent(self, e)
+        self._show_menu()
+
+    def draw_icon(self, icon, painter, rect):
+        rect.moveLeft(12)
+        return super(DropDownToolButton, self).draw_icon(icon, painter, rect)
+
+    def paintEvent(self, e):
+        ToolButton.paintEvent(self, e)
+        DropDownButtonBase.paintEvent(self, e)
+
+
+class PrimaryDropDownButtonBase(DropDownButtonBase):
+    def _draw_drop_down_icon(self, painter, rect):
+        theme = Theme.DARK if is_dark_theme() else Theme.LIGHT
+        ChromaIcon.ARROW_DOWN.render(painter, rect, theme)
+
+
+class PrimaryDropDownPushButton(PrimaryDropDownButtonBase, PrimaryPushButton):
+    def mouseReleaseEvent(self, e):
+        PrimaryPushButton.mouseReleaseEvent(self, e)
+        self._show_menu()
+
+    def paintEvent(self, e):
+        PrimaryPushButton.paintEvent(self, e)
+        PrimaryDropDownButtonBase.paintEvent(self, e)
+
+
+class PrimaryDropDownToolButton(PrimaryDropDownButtonBase, PrimaryToolButton):
+    def mouseReleaseEvent(self, e):
+        PrimaryToolButton.mouseReleaseEvent(self, e)
+        self._show_menu()
+
+    def draw_icon(self, icon, painter, rect):
+        rect.moveLeft(12)
+        return super(PrimaryDropDownToolButton, self).draw_icon(
+            icon, painter, rect)
+
+    def paintEvent(self, e):
+        PrimaryToolButton.paintEvent(self, e)
+        PrimaryDropDownButtonBase.paintEvent(self, e)
