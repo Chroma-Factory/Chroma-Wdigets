@@ -2,13 +2,13 @@ from Qt import QtWidgets
 
 from chroma_wdigets.common.qt import application
 from chroma_wdigets.common.icon import ChromaIcon, Action
-from chroma_wdigets.components.widgets.button import (
+from chroma_wdigets.components.widgets import (
     PushButton, PrimaryPushButton, HyperlinkButton, RadioButton,
     ToolButton, PrimaryToolButton, DropDownPushButton,
     PrimaryDropDownPushButton, PrimaryDropDownToolButton, SplitPushButton,
-    PrimarySplitPushButton,ToggleButton, TransparentToolButton
+    PrimarySplitPushButton, ToggleButton, TransparentToolButton
 )
-from chroma_wdigets.components.widgets.menu import RoundMenu
+from chroma_wdigets.components.widgets import RoundMenu
 
 
 class W(QtWidgets.QDialog):
