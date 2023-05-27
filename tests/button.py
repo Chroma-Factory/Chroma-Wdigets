@@ -5,7 +5,8 @@ from chroma_wdigets.common.icon import ChromaIcon, Action
 from chroma_wdigets.components.widgets.button import (
     PushButton, PrimaryPushButton, HyperlinkButton, RadioButton,
     ToolButton, PrimaryToolButton, DropDownPushButton,
-    PrimaryDropDownPushButton,PrimaryDropDownToolButton
+    PrimaryDropDownPushButton, PrimaryDropDownToolButton, SplitPushButton,
+    PrimarySplitPushButton,ToggleButton, TransparentToolButton
 )
 from chroma_wdigets.components.widgets.menu import RoundMenu
 
@@ -38,6 +39,16 @@ class W(QtWidgets.QDialog):
         btn9 = PrimaryDropDownToolButton(ChromaIcon.BOOK_SHELF)
         btn9.set_menu(menu)
 
+        btn10 = SplitPushButton('Split push button')
+        btn11 = PrimarySplitPushButton('P Split push button', ChromaIcon.GITHUB,
+                                       parent=self)
+        btn10.set_menu(menu)
+        btn11.set_menu(menu)
+
+        btn12 = ToggleButton('AAAA')
+
+        btn13 = TransparentToolButton(ChromaIcon.CHEVRON_RIGHT)
+
         layout.addWidget(btn0)
         layout.addWidget(btn1)
         layout.addWidget(btn2)
@@ -48,6 +59,11 @@ class W(QtWidgets.QDialog):
         layout.addWidget(btn7)
         layout.addWidget(btn8)
         layout.addWidget(btn9)
+        layout.addWidget(btn10)
+        layout.addWidget(btn11)
+        layout.addWidget(btn12)
+        layout.addWidget(btn13)
+
 
 
 if __name__ == '__main__':
