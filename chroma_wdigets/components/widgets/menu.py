@@ -253,7 +253,7 @@ class SubMenuItemWidget(QtWidgets.QWidget):
 class RoundMenu(QtWidgets.QWidget):
     """ Round corner menu """
 
-    closedSignal = QtCore.Signal()
+    closed_signal = QtCore.Signal()
 
     def __init__(self, title="", parent=None):
         super(RoundMenu, self).__init__(parent=parent)
@@ -572,7 +572,7 @@ class RoundMenu(QtWidgets.QWidget):
 
     def closeEvent(self, e):
         e.accept()
-        self.closedSignal.emit()
+        self.closed_signal.emit()
         self.view.clearSelection()
 
     def menu_actions(self):

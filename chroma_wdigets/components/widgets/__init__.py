@@ -17,3 +17,7 @@ from chroma_wdigets.components.widgets.slider import (
     HorizontalSlider, VerticalSlider
 )
 from chroma_wdigets.components.widgets.line_edit import LineEdit, SearchLineEdit
+from chroma_wdigets.components.widgets.combobox import (
+    ComboBox,
+    EditableComboBox
+)

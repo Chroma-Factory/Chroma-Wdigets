@@ -158,7 +158,7 @@ class ChromaStyleSheet(StyleSheetBase, Enum):
     SPIN_BOX = "spin_box"
     TOOL_TIP = "tool_tip"
     CHECKBOX = "checkbox"
-    COMBO_BOX = "combo_box"
+    COMBOBOX = "combobox"
     LINE_EDIT = "line_edit"
     LIST_VIEW = "list_view"
     TREE_VIEW = "tree_view"
