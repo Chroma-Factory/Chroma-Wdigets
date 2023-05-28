@@ -192,7 +192,7 @@ class ComboBoxBase(object):
 
         return -1
 
-    def find_text(self, text: str):
+    def find_text(self, text):
         for i, item in enumerate(self.items):
             if item.text == text:
                 return i
@@ -388,7 +388,7 @@ class EditableComboBox(LineEdit, ComboBoxBase):
 
         return super(EditableComboBox, self).eventFilter(obj, e)
 
-    def _on_text_edited(self, text: str):
+    def _on_text_edited(self, text):
         self._currentIndex = -1
         self.current_text_changed.emit(text)
 
