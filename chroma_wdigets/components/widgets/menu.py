@@ -653,34 +653,34 @@ class EditMenu(RoundMenu):
     def create_actions(self):
         self.cut_act = QtWidgets.QAction(
             ChromaIcon.CUT.icon(),
-            self.tr("Cut"),
+            "Cut",
             self,
             shortcut="Ctrl+X",
             triggered=self.parent().cut,
         )
         self.copy_act = QtWidgets.QAction(
             ChromaIcon.COPY.icon(),
-            self.tr("Copy"),
+            "Copy",
             self,
             shortcut="Ctrl+C",
             triggered=self.parent().copy,
         )
         self.paste_act = QtWidgets.QAction(
             ChromaIcon.PASTE.icon(),
-            self.tr("Paste"),
+            "Paste",
             self,
             shortcut="Ctrl+V",
             triggered=self.parent().paste,
         )
         self.cancel_act = QtWidgets.QAction(
             ChromaIcon.CANCEL.icon(),
-            self.tr("Cancel"),
+            "Cancel",
             self,
             shortcut="Ctrl+Z",
             triggered=self.parent().undo,
         )
         self.select_all_act = QtWidgets.QAction(
-            self.tr("Select all"),
+            "Select all",
             self,
             shortcut="Ctrl+A",
             triggered=self.parent().selectAll
