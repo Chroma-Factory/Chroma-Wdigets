@@ -69,10 +69,12 @@ class MenuAnimationManager(QtCore.QObject):
     @classmethod
     def register(cls, name):
         """ register menu animation manager"""
+
         def wrapper(Manager):
             if name not in cls.managers:
                 cls.managers[name] = Manager
             return Manager
+
         return wrapper
 
     @classmethod
@@ -639,3 +641,129 @@ class RoundMenu(QtWidgets.QWidget):
     def exec_(self, pos, ani=True, ani_type=MenuAnimationType.DROP_DOWN):
         """ show menu"""
         self.exec(pos, ani, ani_type)
+
+
+class EditMenu(RoundMenu):
+    """ Edit menu """
+
+    def __init__(self, title="", parent=None):
+        super(EditMenu, self).__init__(title=title, parent=parent)
+        self.create_actions()
+
+    def create_actions(self):
+        self.cut_act = QtWidgets.QAction(
+            ChromaIcon.CUT.icon(),
+            self.tr("Cut"),
+            self,
+            shortcut="Ctrl+X",
+            triggered=self.parent().cut,
+        )
+        self.copy_act = QtWidgets.QAction(
+            ChromaIcon.COPY.icon(),
+            self.tr("Copy"),
+            self,
+            shortcut="Ctrl+C",
+            triggered=self.parent().copy,
+        )
+        self.paste_act = QtWidgets.QAction(
+            ChromaIcon.PASTE.icon(),
+            self.tr("Paste"),
+            self,
+            shortcut="Ctrl+V",
+            triggered=self.parent().paste,
+        )
+        self.cancel_act = QtWidgets.QAction(
+            ChromaIcon.CANCEL.icon(),
+            self.tr("Cancel"),
+            self,
+            shortcut="Ctrl+Z",
+            triggered=self.parent().undo,
+        )
+        self.select_all_act = QtWidgets.QAction(
+            self.tr("Select all"),
+            self,
+            shortcut="Ctrl+A",
+            triggered=self.parent().selectAll
+        )
+        self.action_list = [
+            self.cut_act, self.copy_act,
+            self.paste_act, self.cancel_act, self.select_all_act
+        ]
+
+    def _parent_text(self):
+        raise NotImplementedError
+
+    def _parent_selected_text(self):
+        raise NotImplementedError
+
+    def exec(self, pos, ani=True, ani_type=MenuAnimationType.DROP_DOWN):
+        self.clear()
+
+        clipboard = QtWidgets.QApplication.clipboard()
+        if clipboard.mimeData().hasText():
+            if self._parent_text():
+                if self._parent_selected_text():
+                    self.add_actions(self.action_list)
+                else:
+                    self.add_actions(self.action_list[2:])
+            else:
+                self.add_action(self.paste_act)
+        else:
+            if self._parent_text():
+                if self._parent_selected_text():
+                    self.add_actions(
+                        self.action_list[:2] + self.action_list[3:])
+                else:
+                    self.add_actions(self.action_list[3:])
+            else:
+                return
+
+        super(EditMenu, self).exec(pos, ani, ani_type)
+
+
+class LineEditMenu(EditMenu):
+    """ Line edit menu """
+
+    def __init__(self, parent):
+        super(LineEditMenu, self).__init__("", parent)
+        self.selectionStart = parent.selectionStart()
+        self.selectionLength = parent.selectionLength()
+
+    def _on_item_clicked(self, item):
+        if self.selectionStart >= 0:
+            self.parent().setSelection(self.selectionStart,
+                                       self.selectionLength)
+
+        super(LineEditMenu, self)._on_item_clicked(item)
+
+    def _parent_text(self):
+        return self.parent().text()
+
+    def _parent_selected_text(self):
+        return self.parent().selectedText()
+
+
+class TextEditMenu(EditMenu):
+    """ Text edit menu """
+
+    def __init__(self, parent):
+        super(TextEditMenu, self).__init__("", parent)
+        cursor = parent.textCursor()
+        self.selection_start = cursor.selection_start()
+        self.selectionLength = cursor.selectionEnd() - self.selection_start + 1
+
+    def _parent_text(self):
+        return self.parent().toPlainText()
+
+    def _parent_selected_text(self):
+        return self.parent().textCursor().selectedText()
+
+    def _on_item_clicked(self, item):
+        if self.selection_start >= 0:
+            cursor = self.parent().textCursor()
+            cursor.setPosition(self.selection_start)
+            cursor.movePosition(
+                QtGui.QTextCursor.Right, QtGui.QTextCursor.KeepAnchor,
+                self.selectionLength)
+
+        super(TextEditMenu, self)._on_item_clicked(item)

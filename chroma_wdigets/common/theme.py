@@ -157,7 +157,7 @@ class ChromaStyleSheet(StyleSheetBase, Enum):
     INFO_BAR = "info_bar"
     SPIN_BOX = "spin_box"
     TOOL_TIP = "tool_tip"
-    CHECK_BOX = "check_box"
+    CHECKBOX = "checkbox"
     COMBO_BOX = "combo_box"
     LINE_EDIT = "line_edit"
     LIST_VIEW = "list_view"
@@ -194,4 +194,15 @@ def update_style_sheet():
 
 def set_theme(theme: Theme, save=False):
     qconfig.set(qconfig.theme_mode, theme, save)
+    update_style_sheet()
+
+
+def theme_color():
+    """ get theme color """
+    return ThemeColor.PRIMARY.color()
+
+
+def set_theme_color(color, save=False):
+    color = QtGui.QColor(color)
+    qconfig.set(qconfig.themeColor, color, save=save)
     update_style_sheet()
