@@ -22,3 +22,5 @@ from chroma_wdigets.components.widgets.combobox import (
     EditableComboBox
 )
 from chroma_wdigets.components.widgets.switch_button import SwitchButton
+from chroma_wdigets.components.widgets.tooltip import (
+    ToolTipFilter, ToolTipPosition)
