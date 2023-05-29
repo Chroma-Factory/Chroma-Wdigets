@@ -703,20 +703,34 @@ class EditMenu(RoundMenu):
         if clipboard.mimeData().hasText():
             if self._parent_text():
                 if self._parent_selected_text():
-                    self.add_actions(self.action_list)
+                    if self.parent().isReadOnly():
+                        self.add_actions([self.copy_act, self.select_all_act])
+                    else:
+                        self.add_actions(self.action_list)
                 else:
-                    self.add_actions(self.action_list[2:])
-            else:
+                    if self.parent().isReadOnly():
+                        self.add_action(self.select_all_act)
+                    else:
+                        self.add_actions(self.action_list[2:])
+            elif not self.parent().isReadOnly():
                 self.add_action(self.paste_act)
-        else:
-            if self._parent_text():
-                if self._parent_selected_text():
-                    self.add_actions(
-                        self.action_list[:2] + self.action_list[3:])
-                else:
-                    self.add_actions(self.action_list[3:])
             else:
                 return
+        else:
+            if not self._parent_text():
+                return
+
+            if self._parent_selected_text():
+                if self.parent().isReadOnly():
+                    self.add_actions([self.copy_act, self.select_all_act])
+                else:
+                    self.add_actions(
+                        self.action_list[:2] + self.action_list[3:])
+            else:
+                if self.parent().isReadOnly():
+                    self.add_action(self.select_all_act)
+                else:
+                    self.add_actions(self.action_list[3:])
 
         super(EditMenu, self).exec(pos, ani, ani_type)
 

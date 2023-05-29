@@ -153,6 +153,10 @@ class SearchLineEdit(LineEdit):
         else:
             self.cleared.emit()
 
+    def set_clear_button_enabled(self, enable):
+        self._is_clear_button_enabled = enable
+        self.setTextMargins(0, 0, 28*enable+30, 0)
+
 
 class TextEdit(QTextEdit):
     """ Text edit """
