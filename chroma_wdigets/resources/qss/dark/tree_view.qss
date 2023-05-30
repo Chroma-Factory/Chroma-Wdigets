@@ -57,11 +57,11 @@ QTreeView::indicator:indeterminate {
 }
 
 QTreeView::indicator:checked {
-    image: url(--SRC_ROOT/images/check_box/Accept_black.svg);
+    image: url(--SRC_ROOT/images/checkbox/Accept_white.svg);
 }
 
 QTreeView::indicator:indeterminate {
-    image: url(--SRC_ROOT/images/check_box/PartialAccept_black.svg);
+    image: url(--SRC_ROOT/images/checkbox/PartialAccept_white.svg);
 }
 
 QTreeView::indicator:checked:hover,

@@ -1,19 +1,18 @@
 # coding:utf-8
 import sys
 from Qt.QtCore import Qt
-from Qt.QtWidgets import QDialog, QTreeWidgetItem, QHBoxLayout
+from Qt.QtWidgets import QDialog, QTreeWidgetItem, QHBoxLayout, QTreeWidgetItemIterator
 
 from chroma_wdigets import TreeWidget, TreeView,application
 
 
-class Demo(QDialog):
+class Widget(QDialog):
     """ 树形控件演示 """
 
-    def __init__(self):
-        super(Demo, self).__init__()
+    def __init__(self, enable_check=False):
+        super(Widget, self).__init__()
         self.setStyleSheet('QDialog{background-color: #242732}')
         self.h_box_layout = QHBoxLayout(self)
-        # setTheme(Theme.DARK)
 
         self.tree = TreeWidget(self)
         self.h_box_layout.addWidget(self.tree)
@@ -42,9 +41,15 @@ class Demo(QDialog):
 
         self.setFixedSize(300, 380)
 
+        if enable_check:
+            it = QTreeWidgetItemIterator(self.tree)
+            while it.value():
+                it.value().setCheckState(0, Qt.Unchecked)
+                it += 1
+
 
 
 if __name__ == '__main__':
     with application():
-        w = Demo()
+        w = Widget(True)
         w.show()
