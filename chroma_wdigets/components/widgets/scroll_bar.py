@@ -135,11 +135,11 @@ class ScrollBar(QtWidgets.QWidget):
         self._is_force_hidden = False
 
         if orient == QtCore.Qt.Vertical:
-            self.partnerBar = parent.verticalScrollBar()
+            self.partner_bar = parent.verticalScrollBar()
             QtWidgets.QAbstractScrollArea.setVerticalScrollBarPolicy(
                 parent, QtCore.Qt.ScrollBarAlwaysOff)
         else:
-            self.partnerBar = parent.horizontalScrollBar()
+            self.partner_bar = parent.horizontalScrollBar()
             QtWidgets.QAbstractScrollArea.setHorizontalScrollBarPolicy(
                 parent, QtCore.Qt.ScrollBarAlwaysOff)
 
@@ -151,13 +151,13 @@ class ScrollBar(QtWidgets.QWidget):
         self.groove.opacity_ani.valueChanged.connect(
             self._on_opacity_ani_value_changed)
 
-        self.partnerBar.range_changed.connect(self.set_range)
-        self.partnerBar.value_changed.connect(self._on_value_changed)
-        self.value_changed.connect(self.partnerBar.setValue)
+        self.partner_bar.rangeChanged.connect(self.set_range)
+        self.partner_bar.valueChanged.connect(self._on_value_changed)
+        self.value_changed.connect(self.partner_bar.setValue)
 
         parent.installEventFilter(self)
 
-        self.set_range(self.partnerBar.minimum(), self.partnerBar.maximum())
+        self.set_range(self.partner_bar.minimum(), self.partner_bar.maximum())
         self.setVisible(self.maximum() > 0 and not self._is_force_hidden)
         self._adjust_pos(self.parent().size())
 
