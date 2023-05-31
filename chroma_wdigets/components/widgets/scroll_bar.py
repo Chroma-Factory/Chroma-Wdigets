@@ -77,7 +77,7 @@ class ScrollBarGroove(QtWidgets.QWidget):
         if not is_dark_theme():
             painter.setBrush(QtGui.QColor(252, 252, 252, 217))
         else:
-            painter.setBrush(QtGui.QColor(44, 44, 44, 245))
+            painter.setBrush(QtGui.QColor(66, 66, 66, 66))
 
         painter.drawRoundedRect(self.rect(), 6, 6)
 
