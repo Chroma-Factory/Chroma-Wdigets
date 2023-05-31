@@ -27,3 +27,5 @@ from chroma_wdigets.components.widgets.tooltip import (
 from chroma_wdigets.components.widgets.tree_view import TreeView, TreeWidget
 from chroma_wdigets.components.widgets.table_view import (
     TableItemDelegate, TableWidget, TableView)
+from chroma_wdigets.components.widgets.list_view import (
+    ListItemDelegate, ListView, ListWidget)
