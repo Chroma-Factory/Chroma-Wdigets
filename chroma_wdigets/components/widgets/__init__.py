@@ -25,3 +25,5 @@ from chroma_wdigets.components.widgets.switch_button import SwitchButton
 from chroma_wdigets.components.widgets.tooltip import (
     ToolTipFilter, ToolTipPosition)
 from chroma_wdigets.components.widgets.tree_view import TreeView, TreeWidget
+from chroma_wdigets.components.widgets.table_view import (
+    TableItemDelegate, TableWidget, TableView)
