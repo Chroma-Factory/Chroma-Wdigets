@@ -29,3 +29,6 @@ from chroma_wdigets.components.widgets.table_view import (
     TableItemDelegate, TableWidget, TableView)
 from chroma_wdigets.components.widgets.list_view import (
     ListItemDelegate, ListView, ListWidget)
+from chroma_wdigets.components.widgets.progress_bar import (
+    IndeterminateProgressBar, ProgressBar)
+from chroma_wdigets.components.widgets.progress_ring import ProgressRing
