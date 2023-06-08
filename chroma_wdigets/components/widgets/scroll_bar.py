@@ -344,11 +344,11 @@ class ScrollBar(QtWidgets.QWidget):
         if self.orientation() == QtCore.Qt.Vertical:
             total = self.maximum() - self.minimum() + p.height()
             s = int(self._groove_length() * p.height() / max(total, 1))
-            self.handle.setFixedHeight(max(40, s))
+            self.handle.setFixedHeight(max(36, s))
         else:
             total = self.maximum() - self.minimum() + p.width()
             s = int(self._groove_length() * p.width() / max(total, 1))
-            self.handle.setFixedWidth(max(40, s))
+            self.handle.setFixedWidth(max(36, s))
 
     def _adjust_handle_pos(self):
         total = max(self.maximum() - self.minimum(), 1)

@@ -7,7 +7,7 @@ from Qt import QtWidgets
 from Qt import QtGui
 from Qt import QtCore
 
-from chroma_wdigets.components.widgets.menu import RoundMenu, MenuItemDelegate
+from chroma_wdigets.components.widgets.menu import RoundMenu, MenuItemDelegate, MenuAnimationType
 from chroma_wdigets.components.widgets.line_edit import LineEdit, LineEditButton
 from chroma_wdigets.common.animation import TranslateYAnimation
 from chroma_wdigets.common.icon import ChromaIcon
@@ -65,10 +65,17 @@ class ComboBoxMenu(RoundMenu):
         super(ComboBoxMenu, self).__init__(title="", parent=parent)
 
         self.view.setViewportMargins(5, 2, 5, 6)
+        self.view.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.view.setItemDelegate(ComboMenuItemDelegate(self))
 
         ChromaStyleSheet.COMBOBOX.apply(self)
         self.set_item_height(33)
+
+    def exec(self, pos, ani=True, ani_type=MenuAnimationType.DROP_DOWN):
+        # todo 应该只这里的问题
+        self.view.adjust_size(pos, ani_type)
+        self.adjustSize()
+        return super(ComboBoxMenu, self).exec(pos, ani, ani_type)
 
 
 class ComboBoxBase(object):
@@ -245,6 +252,7 @@ class ComboBoxBase(object):
             return
 
         menu = ComboBoxMenu(self)
+        menu.setMaximumHeight(200)
         for i, item in enumerate(self.items):
             menu.add_action(
                 QtWidgets.QAction(
@@ -270,7 +278,22 @@ class ComboBoxBase(object):
              menu.layout().contentsMargins().left() +
              self.width() // 2)
         y = self.height()
-        menu.exec(self.mapToGlobal(QtCore.QPoint(x, y)))
+        pos = self.mapToGlobal(QtCore.QPoint(x, y))
+        pos.setY(QtGui.QCursor.pos().y())
+
+        ani_type = MenuAnimationType.DROP_DOWN
+        # menu.view.adjust_size(pos, ani_type)
+
+        # fixme 位置不对
+        print(y)
+        print(menu.view.height())
+
+        if menu.view.height() < 120 and menu.view.items_height() > menu.view.height():
+            ani_type = MenuAnimationType.PULL_UP
+            pos = self.mapToGlobal(QtCore.QPoint(x, 0))
+            menu.view.adjust_size(pos, ani_type)
+
+        menu.exec(pos, ani_type=ani_type)
 
     def _toggle_combo_menu(self):
         if self.drop_menu:

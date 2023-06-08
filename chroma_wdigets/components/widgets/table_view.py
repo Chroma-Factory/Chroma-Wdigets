@@ -81,15 +81,18 @@ class TableItemDelegate(QtWidgets.QStyledItemDelegate):
 
     def initStyleOption(self, option, index):
         super(TableItemDelegate, self).initStyleOption(option, index)
-        option.font = get_font(13)
-        if is_dark_theme():
-            option.palette.setColor(QtGui.QPalette.Text, QtCore.Qt.white)
-            option.palette.setColor(
-                QtGui.QPalette.HighlightedText, QtCore.Qt.white)
-        else:
-            option.palette.setColor(QtGui.QPalette.Text, QtCore.Qt.black)
-            option.palette.setColor(
-                QtGui.QPalette.HighlightedText, QtCore.Qt.black)
+
+        # font
+        option.font = index.data(QtCore.Qt.FontRole) or get_font(13)
+
+        # text color
+        text_color = QtCore.Qt.white if is_dark_theme() else QtCore.Qt.black
+        text_brush = index.data(QtCore.Qt.TextColorRole)
+        if text_brush is not None:
+            text_color = text_brush.color()
+
+        option.palette.setColor(QtGui.QPalette.Text, text_color)
+        option.palette.setColor(QtGui.QPalette.HighlightedText, text_color)
 
     def paint(self, painter, option, index):
         painter.save()

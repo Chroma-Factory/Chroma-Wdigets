@@ -11,7 +11,7 @@ class Widget(QtWidgets.QDialog):
         self.layout = QtWidgets.QVBoxLayout(self)
 
         combobox = ComboBox()
-        combobox.add_items(['小明', '小张', '小品'])
+        combobox.add_items(['小明', '小张', '小品', '小张', '小品', '小张', '小品', '小张', '小品', '小张', '小张', '小品', '小张', '小品', '小张', '小品', '小品', '小张', '小品', '小品', '小张', '小品'])
         combobox.set_current_index(0)
 
         combobox1 = EditableComboBox()

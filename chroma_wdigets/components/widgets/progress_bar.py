@@ -139,7 +139,7 @@ class ProgressBar(QtWidgets.QProgressBar):
 class IndeterminateProgressBar(QtWidgets.QProgressBar):
     """ Indeterminate progress bar """
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, start=True):
         super(IndeterminateProgressBar, self).__init__(parent=parent)
         self._short_pos = 0
         self._long_pos = 0
@@ -167,6 +167,9 @@ class IndeterminateProgressBar(QtWidgets.QProgressBar):
 
         self.setFixedHeight(4)
 
+        if start:
+            self.start()
+
     @QtCore.Property(float)
     def shortPos(self):
         return self._short_pos
@@ -185,15 +188,20 @@ class IndeterminateProgressBar(QtWidgets.QProgressBar):
         self._long_pos = p
         self.update()
 
-    def showEvent(self, e):
-        super(IndeterminateProgressBar, self).showEvent(e)
-        self.start()
-
     def start(self):
         self.shortPos = 0
         self.longPos = 0
         self.ani_group.start()
         self.update()
+
+    def stop(self):
+        self.ani_group.stop()
+        self.shortPos = 0
+        self.longPos = 0
+        self.update()
+
+    def is_started(self):
+        return self.ani_group.state() == QtCore.QParallelAnimationGroup.Running
 
     def pause(self):
         self.ani_group.pause()

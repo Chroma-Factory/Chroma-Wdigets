@@ -44,8 +44,8 @@ class Widget(QtWidgets.QDialog):
         self.table_view.setHorizontalHeaderLabels(
             ['Title', 'Artist', 'Album', 'Year', 'Duration'])
         self.table_view.resizeColumnsToContents()
-        # self.table_view.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
-        # self.table_view.setSortingEnabled(True)
+        self.table_view.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+        self.table_view.setSortingEnabled(True)
 
         self.setStyleSheet('QDialog{background-color: #242732}')
         self.h_box_layout.setContentsMargins(0, 0, 0, 0)
