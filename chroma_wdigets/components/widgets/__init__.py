@@ -32,3 +32,5 @@ from chroma_wdigets.components.widgets.list_view import (
 from chroma_wdigets.components.widgets.progress_bar import (
     IndeterminateProgressBar, ProgressBar)
 from chroma_wdigets.components.widgets.progress_ring import ProgressRing
+from chroma_wdigets.components.widgets.spin_box import (
+    SpinBox, DoubleSpinBox, TimeEdit, DateTimeEdit, DateEdit)
